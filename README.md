@@ -1,4 +1,4 @@
-# React-dada-list
+# React-data-list
 Features include:
 The application renders data list. 
 Infinite scroll adds the next page. 
