@@ -27,24 +27,24 @@ describe('InfinityList', () => {
     expect (container.find('.test_data').length).toEqual(1)
   })
 
-})
+  describe('Header', () => {
 
-describe('Header', () => {
+    it ('should open select component on click', () =>{
+      const container = mount(<Provider store={store}><Header/></Provider>);
 
-  it ('should open select component on click', () =>{
-    const container = mount(<Provider store={store}><Header/></Provider>);
+      expect (container.find('.test_select_open').length).toEqual(0)
+      container.find('.test_select_btn').at(0).simulate('click')
+      expect (container.find('.test_select_open').length).toEqual(1)
+    })
 
-    expect (container.find('.test_select_open').length).toEqual(0)
-    container.find('.test_select_btn').at(0).simulate('click')
-    expect (container.find('.test_select_open').length).toEqual(1)
-  })
+    it ('should open create component on click', () =>{
+      const container = mount(<Provider store={store}><Header/></Provider>);
 
-  it ('should open create component on click', () =>{
-    const container = mount(<Provider store={store}><Header/></Provider>);
+      expect (container.find('.test_create_open').length).toEqual(0)
+      container.find('.test_create_btn').at(0).simulate('click')
+      expect (container.find('.test_create_open').length).toEqual(1)
+    })
 
-    expect (container.find('.test_create_open').length).toEqual(0)
-    container.find('.test_create_btn').at(0).simulate('click')
-    expect (container.find('.test_create_open').length).toEqual(1)
   })
 
 })

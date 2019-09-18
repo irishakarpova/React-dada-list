@@ -1,4 +1,4 @@
-import {CHANGE_SELECTION, ADD_ARTICLE } from '../constants'
+import {CHANGE_SELECTION, ADD_ARTICLE, LOAD_ALL_ARTICLES } from '../constants'
 
 export default function changeSelection(selected){
   return{
@@ -13,4 +13,10 @@ export function addArticle(article, articleId){
 		payload: { article, articleId },
 		generateId: true
 	}
+}
+export function loadAllArticles(){
+  return{
+    type: LOAD_ALL_ARTICLES,
+    callAPI: '/api/article'
+  }
 }

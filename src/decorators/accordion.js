@@ -6,7 +6,7 @@ export default (OriginalComponent) => class AccordionComponent extends React.Com
   }
   toggleOpenItem = (id) => (ev) => {
     this.setState((state) =>({
-      openItemId: state.openItemId === id ? null:id,
+      openItemId: state.openItemId === id ? null : id,
       cssColor: state.cssColor === id ? true : id
     }))
   }

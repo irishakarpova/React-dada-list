@@ -1,63 +1,159 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {addArticle} from '../ac'
+import styles from "./components.modules.css"
+import globalStyles from 'bootstrap/dist/css/bootstrap.module.css'
+import classLister from 'css-module-class-lister'
+
+const classes = classLister(styles, globalStyles)
 
 class AddArticle extends Component{
-	
+
 	state={
 		title: '',
-		text: ''
+		members:'',
+		text: '',
+		location: '',
+		years: '',
+		submitValue: 'Submit your article',
+		errorTitle: '',
+		errorMembers: '',
+		errorText: '',
+		errorLocation: '',
+		errorYears: ''
 	}
 
 	render(){
-		return(
-			
-			<form onSubmit={this.handleSubmit}>
-				<label>Title:</label>
-				<input 
-					value={this.state.title}
-					onChange={this.handleChange('title')}
-				/>
-				<label>Text:</label>
-				<input 
-					value={this.state.text}
-					onChange={this.handleChange('text')}
-				/>
-				<input type='submit' value='submit'/>
-			</form>
-		
-		)
-	}
-	handleSubmit = (ev) => {
-		console.log(this.state)
-		ev.preventDefault()
+
+	const {title, members, text, errorText, location, years, errorMembers, errorTitle, errorLocation,errorYears} = this.state
+
+	return(
+		<div className={classes("container-fluid p-0 m-0")}>
+			<div className={classes("container")}>
+				<div className={classes("row d-flex justify-content-center test_create_open")}>
+					<div className={classes("form col-md-10 col-12")}>
+						<h3 className={classes("new-article-title")}>Add new article </h3>
+						<form className={classes("d-flex flex-column")}
+								onSubmit={this.handleSubmit}>
+							<input className={classes("form-field")}
+								placeholder="Name of group"
+								value={title}
+								onChange={this.handleChange('title')}
+							/>
+							{errorTitle}
+
+							<input className={classes("form-field")}
+								placeholder="Members"
+								value={members}
+								onChange={this.handleChange('members')}
+							/>
+				  		{errorMembers}
+							<input className={classes("form-field")}
+								placeholder="Location"
+								value={location}
+								onChange={this.handleChange('location')}
+							/>
+						  {errorLocation}
+							<input className={classes("form-field")}
+								placeholder="Years"
+								value={years}
+								onChange={this.handleChange('years')}
+							/>
+							{errorYears}
+							<input className={classes("form-description")}
+								placeholder="Description"
+								value={text}
+								onChange={this.handleChange('text')}
+							/>
+							{errorText}
+							<input type='submit' value='SUBMIT YOUR ARTICLE'/>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	)}
+
+   handleSubmit = (ev) => {
+
+	   ev.preventDefault()
+
+	   const errorMessage =
+		   <p className={classes("error_messages")}>this field can't be blank</p>
+	   const errorMessageDescr =
+			<p className={classes("error_messages")}>this field must be at least 50 characters minimum</p>
+
+	   let errors = {
+	   	 errorTitle: null,
+		   errorMembers: null,
+		   errorText: null,
+			 errorYears: null,
+			 errorLocation: null
+	   }
+
+	   let hasError = false
+
+			if (!this.isValidField('title')){
+				errors.errorTitle = errorMessage
+				hasError = true
+			}
+
+		   if (!this.isValidField('members')){
+				errors.errorMembers = errorMessage
+			    hasError = true
+
+			}
+		   if (!this.isValidField('text')){
+				errors.errorText = errorMessageDescr
+				hasError = true
+			}
+			if (!this.isValidField('years')){
+			 errors.errorYears = errorMessage
+			 hasError = true
+		 }
+		 if (!this.isValidField('location')){
+			errors.errorLocation = errorMessage
+			hasError = true
+		}
+
+			this.setState(errors)
+				if (hasError) {
+					return
+			}
+
 		this.props.addArticle(this.state)
-		this.setState({
-			title: '',
-			text: ''
-		})
-	}
-	
-  	isValidForm = () => ['user', 'text'].every(this.isValidField)
+
+		return(
+			this.setState({
+				title: '',
+				members: '',
+				text: '',
+				location:'',
+				years:'',
+				submitValue: 'The article is submitted'
+			})
+		)
+   }
 
 	isValidField = (type) => this.state[type].length >= limits[type].min
 
 	handleChange = (type) => (ev) =>{
 		const {value} = ev.target
 		if(value.length>limits[type].max) return
-		this.setState({
-			[type]: value
-		})
-	}
+			this.setState({
+				[type]: value
+			})
+		}
 }
+
 const limits =  {
-	title: { min:2, max:20},
-	text: { min:2, max:20}
+	title: { min:1, max:20},
+	members: { min:1 , max:100},
+	text: { min:5, max:350},
+	location: { min:5, max:50},
+	years: {min:4, max:50}
 }
 
 export default connect(null, (dispatch, ownProps) => ({
-	addArticle: (comment) => dispatch(addArticle(comment, ownProps.articleId))
-}))(AddArticle)	
-	
-	
-	
+	addArticle: (article) => dispatch(addArticle(article, ownProps.articleId))
+}))(AddArticle)

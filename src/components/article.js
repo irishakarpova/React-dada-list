@@ -1,23 +1,29 @@
 import React, {Component} from "react"
 import {connect} from 'react-redux'
+import styles from "./components.modules.css"
+import globalStyles from 'bootstrap/dist/css/bootstrap.module.css'
+import classLister from 'css-module-class-lister'
+
+
+const classes = classLister(styles, globalStyles)
 
 class Article extends Component{
 
   render(){
   const {article, toggleOpen, cssColor} = this.props
-  const title = cssColor ? "ArticleTitle" : "ArticleTitleOn"
+  const title = cssColor ? 'articleTitle' : 'articleTitleOn test_open_data'
 
   return(
   <div>
-    <article className="bg-article">
-      <div className="container p-0">
-        <div className="row p-0 justify-content-md-center">
-        <div className="col-md-10 col-12">
-           <button onClick = {toggleOpen} className={title}>
-            <p>{article.title}</p>
-          </button>
-          {this.getBody()}
-        </div>
+    <article className={classes("bg-article")}>
+      <div className={classes("container p-0")}>
+        <div className={classes("row p-0 justify-content-md-center")}>
+          <div className={classes("col-md-10 col-12")}>
+             <button onClick = {toggleOpen} className= {title}>
+              <p>{article.title}</p>
+            </button>
+            {this.getBody()}
+          </div>
         </div>
       </div>
     </article>
@@ -29,13 +35,12 @@ class Article extends Component{
 
     if (!isOpen) return null
     return(
-      <section className="bg-section">
-        <div className="Aricle-location"><p>{article.location}</p></div>
-        <div className="Article-text"><p>{article.text}</p></div>
-        <div className="Article-member"><p>{article.members}</p></div>
+      <section className={classes("bg-section test_data")}>
+        <div className={classes("article-location")}><p>{article.location}</p></div>
+        <div className={classes("article-text")}><p>{article.text}</p></div>
+        <div className={classes("article-member")}><p>{article.members}</p></div>
       </section>
     )
-
   }
 }
 

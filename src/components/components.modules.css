@@ -46,21 +46,21 @@
 	font-family: 'Roboto Mono', monospace;
 	padding: 0 20px;
 }
-.ArticleTitle {
+.articleTitle {
 	background: #36a998;
 }
 
-.ArticleTitleOn {
+.articleTitleOn {
 	background: #36a6aa;
 }
 
-.ArticleTitle p,
-.ArticleTitleOn p {
+.articleTitle p,
+.articleTitleOn p {
 	margin: 0;
 }
 
-.ArticleTitle,
-.ArticleTitleOn {
+.articleTitle,
+.articleTitleOn {
 	min-height: 60px;
 	width: 100%;
 	margin: 10px 0 0px 0;
@@ -120,7 +120,6 @@
 	font-size: calc(38px + 1vw);
 	font-family: 'Anton', sans-serif;
 	line-height: 60px;
-	1padding-left: 15px;
 	margin: 0;
 	padding-top: 15px;
 	color: white;

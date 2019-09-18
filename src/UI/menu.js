@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ToggleCreate from './toggleCreate'
 import ToggleSelect from './toggleSelect'
-import styles from './buttons.modules.css'
+import styles from '../App.module.css'
 import globalStyles from 'bootstrap/dist/css/bootstrap.module.css'
 import classLister from 'css-module-class-lister'
 
@@ -25,15 +25,14 @@ class Menu extends Component{
 	const addI = this.state.openedIndex === 0 ||
 		  this.state.openedIndex === null  ?
 
-		  <div className
-				={classes("btn-toggle-open-select")} onClick={this.props.handleOpenSelect}>
+		  <div className={classes("btn-toggle-open-select test_select_btn")} onClick={this.props.handleOpenSelect}>
 			  <ToggleSelect/>
 		  </div>: null
 
 	const selectI = this.state.openedIndex === 1 ||
 		  this.state.openedIndex ===  null ?
 
-		  <div className={classes("btn-toggle-open-create")} onClick={this.props.handleOpenAdd} >
+		  <div className={classes("btn-toggle-create-create test_create_btn")} onClick={this.props.handleOpenAdd} >
 		  	<ToggleCreate/>
 		  </div> : null
 
@@ -41,7 +40,7 @@ class Menu extends Component{
 
 	const inMenu  = menuItems.map((item, index)=> {
 		return(
-				<li key={index} className={classes('p-0 col-md-4 col-5 m-1')}
+				<li key={index} className={classes("p-0 col-md-4 col-5 m-1")}
 					onClick={()=>{this.handleClick(index)}}>
 						{item}
 				</li>
@@ -49,7 +48,7 @@ class Menu extends Component{
 	)
 
 	return(
-		<ul className={classes("col-md-12 d-flex justify-content-end flex-row m-0 p-0")}>
+		<ul className={classes("col-md-12 d-flex justify-content-end align-items-center flex-row m-0 p-0")}>
 			{inMenu}
 		</ul>
 	)}
