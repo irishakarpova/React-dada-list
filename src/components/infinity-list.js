@@ -19,6 +19,7 @@ class InfinityList extends Component {
   componentDidMount(){
     const { fetchAllArticles } = this.props
     fetchAllArticles && fetchAllArticles()
+    console.log('loaded')
   }
 
   handleScroll = () => {

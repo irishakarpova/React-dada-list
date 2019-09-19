@@ -1,5 +1,6 @@
 import React, {Component} from "react"
 import {connect} from 'react-redux'
+import { loadArticleById  } from '../ac'
 import styles from "./components.modules.css"
 import globalStyles from 'bootstrap/dist/css/bootstrap.module.css'
 import classLister from 'css-module-class-lister'
@@ -8,6 +9,13 @@ import classLister from 'css-module-class-lister'
 const classes = classLister(styles, globalStyles)
 
 class Article extends Component{
+
+  componentDidUpdate(oldProps){
+    const { isOpen, loadArticleById, article } = this.props
+    if (isOpen && !oldProps.isOpen) loadArticleById(article.id)
+    console.log('loaded2')
+  }
+
 
   render(){
   const {article, toggleOpen, cssColor} = this.props
@@ -30,6 +38,7 @@ class Article extends Component{
   </div>
   )}
 
+
   getBody(){
     const {isOpen, article} = this.props
 
@@ -37,11 +46,14 @@ class Article extends Component{
     return(
       <section className={classes("bg-section test_data")}>
         <div className={classes("article-location")}><p>{article.location}</p></div>
-        <div className={classes("article-text")}><p>{article.text}</p></div>
+        <div className={classes("article-text")}><p>{article.description}</p></div>
         <div className={classes("article-member")}><p>{article.members}</p></div>
       </section>
     )
   }
 }
 
-export default connect()(Article)
+export default connect(
+  null,
+  { loadArticleById }
+)(Article)

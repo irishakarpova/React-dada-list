@@ -4,7 +4,7 @@ export const selectionSelector = (state) => state.filters.selected
 
 export const filterSelector = (state) => state.filters.selected
 
-export const articleMapSelector = (state) => state.articles
+export const articleMapSelector = (state) => state.articles.entities
 
 export const articleListSelector = createSelector(
   articleMapSelector,
@@ -15,7 +15,7 @@ export const filtratedArticlesSelector = createSelector(
   selectionSelector,
   articleListSelector,
   (selected, articles) => {
- 
+
 
     return articles.filter((article) => {
 	return(
@@ -25,7 +25,3 @@ export const filtratedArticlesSelector = createSelector(
     })
   }
 )
-
-
-
-
