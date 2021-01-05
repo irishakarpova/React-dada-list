@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Header from './components/header'
 import InfinityList from './components/infinity-list'
 import 'bootstrap/dist/css/bootstrap.css'
+
 import './App.css'
 
 
