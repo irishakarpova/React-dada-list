@@ -13,7 +13,6 @@ class Article extends Component{
   componentDidUpdate(oldProps){
     const { isOpen, loadArticleById, article } = this.props
     if (isOpen && !oldProps.isOpen) loadArticleById(article.id)
-    console.log('loaded2')
   }
 
 
@@ -41,7 +40,6 @@ class Article extends Component{
 
   getBody(){
     const {isOpen, article} = this.props
-
     if (!isOpen) return null
     return(
       <section className={classes("bg-section test_data")}>
