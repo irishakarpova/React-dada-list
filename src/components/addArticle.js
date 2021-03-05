@@ -1,159 +1,187 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {addArticle} from '../ac'
-import styles from "./components.modules.css"
-import globalStyles from 'bootstrap'
-import classLister from 'css-module-class-lister'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { addArticle } from "../ac";
+import styles from "./components.modules.css";
+import globalStyles from "bootstrap";
+import classLister from "css-module-class-lister";
 
-const classes = classLister(styles, globalStyles)
+const classes = classLister(styles, globalStyles);
 
-class AddArticle extends Component{
+class AddArticle extends Component {
+    state = {
+        title: "",
+        members: "",
+        text: "",
+        location: "",
+        years: "",
+        submitValue: "Submit your article",
+        errorTitle: "",
+        errorMembers: "",
+        errorText: "",
+        errorLocation: "",
+        errorYears: ""
+    };
 
-	state={
-		title: '',
-		members:'',
-		text: '',
-		location: '',
-		years: '',
-		submitValue: 'Submit your article',
-		errorTitle: '',
-		errorMembers: '',
-		errorText: '',
-		errorLocation: '',
-		errorYears: ''
-	}
+    render() {
+        const {
+            title,
+            members,
+            text,
+            errorText,
+            location,
+            years,
+            errorMembers,
+            errorTitle,
+            errorLocation,
+            errorYears
+        } = this.state;
 
-	render(){
+        return (
+            <div className={classes("container-fluid p-0 m-0")}>
+                <div className={classes("container")}>
+                    <div
+                        className={classes(
+                            "row d-flex justify-content-center test_create_open"
+                        )}
+                    >
+                        <div className={classes("form col-md-10 col-12")}>
+                            <h3 className={classes("new-article-title")}>
+                                Add new article{" "}
+                            </h3>
+                            <form
+                                className={classes("d-flex flex-column")}
+                                onSubmit={this.handleSubmit}
+                            >
+                                <input
+                                    className={classes("form-field")}
+                                    placeholder="Name of group"
+                                    value={title}
+                                    onChange={this.handleChange("title")}
+                                />
+                                {errorTitle}
 
-	const {title, members, text, errorText, location, years, errorMembers, errorTitle, errorLocation,errorYears} = this.state
+                                <input
+                                    className={classes("form-field")}
+                                    placeholder="Members"
+                                    value={members}
+                                    onChange={this.handleChange("members")}
+                                />
+                                {errorMembers}
+                                <input
+                                    className={classes("form-field")}
+                                    placeholder="Location"
+                                    value={location}
+                                    onChange={this.handleChange("location")}
+                                />
+                                {errorLocation}
+                                <input
+                                    className={classes("form-field")}
+                                    placeholder="Years"
+                                    value={years}
+                                    onChange={this.handleChange("years")}
+                                />
+                                {errorYears}
+                                <input
+                                    className={classes("form-description")}
+                                    placeholder="Description"
+                                    value={text}
+                                    onChange={this.handleChange("text")}
+                                />
+                                {errorText}
+                                <input
+                                    type="submit"
+                                    value="SUBMIT YOUR ARTICLE"
+                                />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
-	return(
-		<div className={classes("container-fluid p-0 m-0")}>
-			<div className={classes("container")}>
-				<div className={classes("row d-flex justify-content-center test_create_open")}>
-					<div className={classes("form col-md-10 col-12")}>
-						<h3 className={classes("new-article-title")}>Add new article </h3>
-						<form className={classes("d-flex flex-column")}
-								onSubmit={this.handleSubmit}>
-							<input className={classes("form-field")}
-								placeholder="Name of group"
-								value={title}
-								onChange={this.handleChange('title')}
-							/>
-							{errorTitle}
+    handleSubmit = (ev) => {
+        ev.preventDefault();
 
-							<input className={classes("form-field")}
-								placeholder="Members"
-								value={members}
-								onChange={this.handleChange('members')}
-							/>
-				  		{errorMembers}
-							<input className={classes("form-field")}
-								placeholder="Location"
-								value={location}
-								onChange={this.handleChange('location')}
-							/>
-						  {errorLocation}
-							<input className={classes("form-field")}
-								placeholder="Years"
-								value={years}
-								onChange={this.handleChange('years')}
-							/>
-							{errorYears}
-							<input className={classes("form-description")}
-								placeholder="Description"
-								value={text}
-								onChange={this.handleChange('text')}
-							/>
-							{errorText}
-							<input type='submit' value='SUBMIT YOUR ARTICLE'/>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	)}
+        const errorMessage = (
+            <p className={classes("error_messages")}>
+                this field can't be blank
+            </p>
+        );
+        const errorMessageDescr = (
+            <p className={classes("error_messages")}>
+                this field must be at least 50 characters minimum
+            </p>
+        );
 
-   handleSubmit = (ev) => {
+        let errors = {
+            errorTitle: null,
+            errorMembers: null,
+            errorText: null,
+            errorYears: null,
+            errorLocation: null
+        };
 
-	   ev.preventDefault()
+        let hasError = false;
 
-	   const errorMessage =
-		   <p className={classes("error_messages")}>this field can't be blank</p>
-	   const errorMessageDescr =
-			<p className={classes("error_messages")}>this field must be at least 50 characters minimum</p>
+        if (!this.isValidField("title")) {
+            errors.errorTitle = errorMessage;
+            hasError = true;
+        }
 
-	   let errors = {
-	   	 errorTitle: null,
-		   errorMembers: null,
-		   errorText: null,
-			 errorYears: null,
-			 errorLocation: null
-	   }
+        if (!this.isValidField("members")) {
+            errors.errorMembers = errorMessage;
+            hasError = true;
+        }
+        if (!this.isValidField("text")) {
+            errors.errorText = errorMessageDescr;
+            hasError = true;
+        }
+        if (!this.isValidField("years")) {
+            errors.errorYears = errorMessage;
+            hasError = true;
+        }
+        if (!this.isValidField("location")) {
+            errors.errorLocation = errorMessage;
+            hasError = true;
+        }
 
-	   let hasError = false
+        this.setState(errors);
+        if (hasError) {
+            return;
+        }
 
-			if (!this.isValidField('title')){
-				errors.errorTitle = errorMessage
-				hasError = true
-			}
+        this.props.addArticle(this.state);
 
-		   if (!this.isValidField('members')){
-				errors.errorMembers = errorMessage
-			    hasError = true
+        return this.setState({
+            title: "",
+            members: "",
+            text: "",
+            location: "",
+            years: "",
+            submitValue: "The article is submitted"
+        });
+    };
 
-			}
-		   if (!this.isValidField('text')){
-				errors.errorText = errorMessageDescr
-				hasError = true
-			}
-			if (!this.isValidField('years')){
-			 errors.errorYears = errorMessage
-			 hasError = true
-		 }
-		 if (!this.isValidField('location')){
-			errors.errorLocation = errorMessage
-			hasError = true
-		}
+    isValidField = (type) => this.state[type].length >= limits[type].min;
 
-			this.setState(errors)
-				if (hasError) {
-					return
-			}
-
-		this.props.addArticle(this.state)
-
-		return(
-			this.setState({
-				title: '',
-				members: '',
-				text: '',
-				location:'',
-				years:'',
-				submitValue: 'The article is submitted'
-			})
-		)
-   }
-
-	isValidField = (type) => this.state[type].length >= limits[type].min
-
-	handleChange = (type) => (ev) =>{
-		const {value} = ev.target
-		if(value.length>limits[type].max) return
-			this.setState({
-				[type]: value
-			})
-		}
+    handleChange = (type) => (ev) => {
+        const { value } = ev.target;
+        if (value.length > limits[type].max) return;
+        this.setState({
+            [type]: value
+        });
+    };
 }
 
-const limits =  {
-	title: { min:1, max:20},
-	members: { min:1 , max:100},
-	text: { min:5, max:350},
-	location: { min:5, max:50},
-	years: {min:4, max:50}
-}
+const limits = {
+    title: { min: 1, max: 20 },
+    members: { min: 1, max: 100 },
+    text: { min: 5, max: 350 },
+    location: { min: 5, max: 50 },
+    years: { min: 4, max: 50 }
+};
 
 export default connect(null, (dispatch, ownProps) => ({
-	addArticle: (article) => dispatch(addArticle(article, ownProps.articleId))
-}))(AddArticle)
+    addArticle: (article) => dispatch(addArticle(article, ownProps.articleId))
+}))(AddArticle);

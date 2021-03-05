@@ -1,36 +1,55 @@
-import { Record } from 'immutable'
-import { ADD_ARTICLE, LOAD_ALL_ARTICLES, LOAD_ARTICLE } from '../constants'
-import { arrToMap } from './utils'
+import { Record } from "immutable";
+import {
+    ADD_ARTICLE,
+    LOAD_ALL_ARTICLES,
+    LOAD_ARTICLE,
+    SUCCESS,
+    START,
+    FAIL
+} from "../constants";
+import { arrToMap } from "./utils";
 
 const ArticleRecord = Record({
-	id: null,
-	title: null,
-	description: null,
-	location: null,
-	members: null
-})
-const ReducerRecord = Record({
-	entities: arrToMap([], ArticleRecord)
-})
+    id: null,
+    title: null,
+    description: null,
+    location: null,
+    members: null
+});
 
-export default (articlesState = new ReducerRecord(), action) =>{
+const DataRecord = Record({
+    entities: arrToMap([], ArticleRecord),
+    loading: false,
+    error: false
+});
 
-  const { type, payload, randomId, response } = action
+export default (articlesState = new DataRecord(), action) => {
+    const { type, payload, randomId, response } = action;
 
-  switch (type){
+    switch (type) {
+        case LOAD_ALL_ARTICLES + START:
+            return articlesState.set("loading", true);
 
-	case ADD_ARTICLE:
-		  return articlesState.setIn(['entities', randomId], {
-			  ...payload.article, id:randomId })
+        case LOAD_ALL_ARTICLES + SUCCESS:
+            return articlesState
+                .set("entities", arrToMap(response, ArticleRecord))
+                .set("loading", false);
 
-	case LOAD_ALL_ARTICLES:
-			return articlesState.set('entities', arrToMap(response, ArticleRecord))
+        case LOAD_ALL_ARTICLES + FAIL:
+            return articlesState.set("error", true);
 
-	case LOAD_ARTICLE :
-			return articlesState.set(['entities', payload.id], new ArticleRecord(response))
+        case LOAD_ARTICLE:
+            return articlesState.set(
+                ["entities", payload.id],
+                new ArticleRecord(response)
+            );
+        case ADD_ARTICLE:
+            return articlesState.setIn(["entities", randomId], {
+                ...payload.article,
+                id: randomId
+            });
 
-    default:
-        return articlesState
-  }
-
-}
+        default:
+            return articlesState;
+    }
+};
